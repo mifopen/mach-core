@@ -949,44 +949,40 @@ pub fn cursorShape(self: *Core) CursorShape {
 }
 
 // May be called from any thread.
-pub fn joystickPresent(_: *Core, _: Joystick) bool {
-    @panic("TODO: thread safe API");
-    // const idx: u8 = @intFromEnum(joystick);
-    // if (idx >= @typeInfo(glfw.Joystick.Id).Enum.len) return false;
+pub fn joystickPresent(self: *Core, joystick: Joystick) bool {
+    const idx: u8 = @intFromEnum(joystick);
+    if (idx >= @typeInfo(glfw.Joystick.Id).Enum.fields.len) return false;
 
-    // self.input_mu.lockShared();
-    // defer self.input_mu.unlockShared();
-    // return self.present_joysticks.isSet(idx);
+    self.input_mu.lockShared();
+    defer self.input_mu.unlockShared();
+    return self.present_joysticks.isSet(idx);
 }
 
 // May be called from any thread.
-pub fn joystickName(_: *Core, _: Joystick) ?[:0]const u8 {
-    @panic("TODO: thread safe API");
-    // const idx: u8 = @intFromEnum(joystick);
-    // if (idx >= @typeInfo(glfw.Joystick.Id).Enum.len) return null;
+pub fn joystickName(_: *Core, joystick: Joystick) ?[:0]const u8 {
+    const idx: u8 = @intFromEnum(joystick);
+    if (idx >= @typeInfo(glfw.Joystick.Id).Enum.fields.len) return null;
 
-    // const glfw_joystick = glfw.Joystick{ .jid = @intCast(idx) };
-    // return glfw_joystick.getName();
+    const glfw_joystick = glfw.Joystick{ .jid = @enumFromInt(idx) };
+    return glfw_joystick.getName();
 }
 
 // May be called from any thread.
-pub fn joystickButtons(_: *Core, _: Joystick) ?[]const bool {
-    @panic("TODO: thread safe API");
-    // const idx: u8 = @intFromEnum(joystick);
-    // if (idx >= @typeInfo(glfw.Joystick.Id).Enum.len) return null;
+pub fn joystickButtons(_: *Core, joystick: Joystick) ?[]const bool {
+    const idx: u8 = @intFromEnum(joystick);
+    if (idx >= @typeInfo(glfw.Joystick.Id).Enum.fields.len) return null;
 
-    // const glfw_joystick = glfw.Joystick{ .jid = @intCast(idx) };
-    // return @ptrCast(glfw_joystick.getButtons());
+    const glfw_joystick = glfw.Joystick{ .jid = @enumFromInt(idx) };
+    return @ptrCast(glfw_joystick.getButtons());
 }
 
 // May be called from any thread.
-pub fn joystickAxes(_: *Core, _: Joystick) ?[]const f32 {
-    @panic("TODO: thread safe API");
-    // const idx: u8 = @intFromEnum(joystick);
-    // if (idx >= @typeInfo(glfw.Joystick.Id).Enum.len) return null;
+pub fn joystickAxes(_: *Core, joystick: Joystick) ?[]const f32 {
+    const idx: u8 = @intFromEnum(joystick);
+    if (idx >= @typeInfo(glfw.Joystick.Id).Enum.fields.len) return null;
 
-    // const glfw_joystick = glfw.Joystick{ .jid = @intCast(idx) };
-    // return glfw_joystick.getAxes();
+    const glfw_joystick = glfw.Joystick{ .jid = @enumFromInt(idx) };
+    return glfw_joystick.getAxes();
 }
 
 // May be called from any thread.
